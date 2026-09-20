@@ -1,6 +1,7 @@
 import type { ContainerDetail, PortDetail, AnalyticsData, RouteOption, ChatMessage } from '../types';
 
-const API_BASE = 'http://127.0.0.1:8000/api';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
+
 
 export async function fetchContainers(params?: { search?: string; status?: string; risk?: string; limit?: number }) {
   const query = new URLSearchParams();
@@ -91,5 +92,17 @@ export async function fetchRouteOptions(containerId: string): Promise<Record<str
 export async function fetchWarehouseData() {
   const res = await fetch(`${API_BASE}/warehouse`);
   if (!res.ok) throw new Error('Failed to fetch warehouse data');
+  return res.json();
+}
+
+export async function fetchFleetHealth() {
+  const res = await fetch(`${API_BASE}/fleet-health`);
+  if (!res.ok) throw new Error('Failed to fetch fleet health');
+  return res.json();
+}
+
+export async function fetchEventFeed() {
+  const res = await fetch(`${API_BASE}/event-feed`);
+  if (!res.ok) throw new Error('Failed to fetch event feed');
   return res.json();
 }

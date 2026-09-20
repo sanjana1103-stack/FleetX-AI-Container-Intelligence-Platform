@@ -195,6 +195,56 @@ def export_csv():
         headers={"Content-Disposition": "attachment; filename=fleetx_containers_telemetry.csv"}
     )
 
+@router.get("/fleet-health")
+def get_fleet_health():
+    """AI-calculated fleet health score with breakdown."""
+    total = len(CONTAINERS_DB)
+    high_risk = sum(1 for c in CONTAINERS_DB.values() if c["delay_risk"] == "High")
+    disrupted = sum(1 for c in CONTAINERS_DB.values() if c.get("disruption_active"))
+    delayed = sum(1 for c in CONTAINERS_DB.values() if c["status"] == "Delayed")
+    on_time = total - delayed - disrupted
+
+    # Weighted health score
+    score = 100
+    score -= (high_risk / max(total, 1)) * 30
+    score -= (disrupted / max(total, 1)) * 25
+    score -= (delayed / max(total, 1)) * 15
+    score = max(0, min(100, round(score, 1)))
+
+    return {
+        "fleet_health_score": score,
+        "total_containers": total,
+        "on_time": on_time,
+        "delayed": delayed,
+        "high_risk": high_risk,
+        "disrupted": disrupted,
+        "status": "EXCELLENT" if score >= 90 else "GOOD" if score >= 75 else "DEGRADED" if score >= 55 else "CRITICAL",
+        "breakdown": {
+            "weather_impact": round((high_risk / max(total, 1)) * 30, 1),
+            "congestion_impact": round((disrupted / max(total, 1)) * 25, 1),
+            "delay_impact": round((delayed / max(total, 1)) * 15, 1),
+            "baseline_score": 100
+        }
+    }
+
+@router.get("/event-feed")
+def get_event_feed():
+    """Live operations event feed for scrolling ticker."""
+    import random, datetime
+    events = [
+        {"type": "ALERT", "severity": "HIGH", "message": "Tropical Cyclone Varun — Indian Ocean Lane", "time": "2m ago", "icon": "storm"},
+        {"type": "INFO", "severity": "MEDIUM", "message": "Rotterdam berth utilization rising to 91%", "time": "5m ago", "icon": "port"},
+        {"type": "SUCCESS", "severity": "LOW", "message": "Customs clearance completed — HLCU4567890", "time": "8m ago", "icon": "customs"},
+        {"type": "ALERT", "severity": "HIGH", "message": "Reefer alert — temperature drift on CMAU9876543", "time": "12m ago", "icon": "reefer"},
+        {"type": "INFO", "severity": "LOW", "message": "Vessel MV Nordic Express departed Shanghai — ETA Oct 12", "time": "15m ago", "icon": "vessel"},
+        {"type": "SUCCESS", "severity": "LOW", "message": "ECO route optimization applied — $47K savings", "time": "19m ago", "icon": "eco"},
+        {"type": "ALERT", "severity": "MEDIUM", "message": "Anchorage queue growing at Singapore — 8 vessels", "time": "24m ago", "icon": "port"},
+        {"type": "INFO", "severity": "LOW", "message": "IMB advisory: Red Sea piracy incident reported 11°N 44°E", "time": "31m ago", "icon": "security"},
+        {"type": "SUCCESS", "severity": "LOW", "message": "Vessel berthed at Jebel Ali — TRHU559871 on schedule", "time": "38m ago", "icon": "vessel"},
+        {"type": "INFO", "severity": "MEDIUM", "message": "Panama Canal southbound queue: 42 vessels (18h wait)", "time": "45m ago", "icon": "canal"},
+    ]
+    return {"events": events, "total": len(events), "generated_at": datetime.datetime.utcnow().isoformat()}
+
 @router.get("/warehouse")
 def get_warehouse_telemetry():
     return {

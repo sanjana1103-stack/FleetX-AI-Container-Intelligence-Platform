@@ -29,5 +29,10 @@ def root():
         "version": "2.0.0"
     }
 
+@app.get("/health")
+def health():
+    return {"status": "healthy", "service": "FleetX Container Intelligence Platform", "version": "2.0.0"}
+
+
 if __name__ == "__main__":
     uvicorn.run("backend.main:app", host="127.0.0.1", port=8000, reload=True)
