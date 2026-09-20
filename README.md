@@ -1,8 +1,16 @@
 # FleetX — AI Container Intelligence Platform
 
+<p align="center">
+  <img src="https://images.openai.com/static-rsc-4/YF9y9zq6tHSMk29EXFOL-etpSpIjpUhDpmZVbJEZDAiqlPtXVyt3hesvaXe5vC8K-Ks20VrMiyxAdtmWctCZXLt756nVeXwO5oOE5fiOdEOy5wCPqe_HtgkCwudtQc56kOFB01F-yQMhgkK8dm-zpi6vU-ovwJ8FzQi-xAMt_aU?purpose=inline" alt="Maersk logo" width="420" />
+</p>
+
 FleetX is a localhost-first logistics intelligence platform for monitoring container movements, analyzing routes, simulating disruptions, and operating intermodal facilities from a single dashboard.
 
 It combines a React and TypeScript operations console with a FastAPI backend, interactive geospatial views, predictive ETA and delay-risk workflows, and digital-twin simulations for disruption planning.
+
+<p align="center">
+  <img src="https://images.openai.com/static-rsc-4/iSEkwB41S9ifSMu_tc655KmPw7wDwUtRE1b_FQNfVJT0x5FGDNnq2SVmBIDC7k4ak7Bq1_dULUhGyDeaj5dRTamq28ctI3MMGfT8LwqdJzPmMb1H4wbOVhGRrMXs5j33mtke5XczR8hure1yRBoNZGe9LX-RlkfC0WrEJevo0c5VdrGTruBziyNdH-MWo13G?purpose=fullsize" alt="Container port and intermodal logistics operations" width="100%" />
+</p>
 
 ## What FleetX provides
 
@@ -17,18 +25,26 @@ It combines a React and TypeScript operations console with a FastAPI backend, in
 
 ```text
 ┌─────────────────────────────┐      HTTP / JSON      ┌─────────────────────────────┐
-│ React + TypeScript + Vite   │ ────────────────────▶ │ FastAPI + Python             │
-│ frontend/                    │ ◀──────────────────── │ backend/                     │
+│ React + TypeScript + Vite   │ ────────────────────▶ │ FastAPI + Python            │
+│ frontend/                   │ ◀──────────────────── │ backend/                    │
 │                             │                       │                             │
-│ Leaflet map, dashboard,     │                       │ Operational APIs, analytics, │
-│ simulations, charts, export │                       │ predictions, and scenarios   │
+│ Leaflet map, dashboard,     │                       │ Operational APIs, analytics,│
+│ simulations, charts, export│                       │ predictions, and scenarios  │
 └─────────────────────────────┘                       └─────────────────────────────┘
-``` 
+```
 
 - **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, Leaflet, Lucide, and jsPDF.
 - **Backend:** FastAPI with Uvicorn, Pydantic, pandas, NumPy, scikit-learn, and ReportLab.
 - **API client:** `frontend/src/services/api.ts` targets `http://127.0.0.1:8000/api` by default.
 - **Local fallback:** `frontend/src/data/initialData.ts` keeps the dashboard usable when the API is unavailable.
+
+## End-to-end logistics workflow
+
+The platform supports the complete movement of goods from production through port and intermodal facilities to warehouses, distribution centers, and consumers.
+
+<p align="center">
+  <img src="https://images.openai.com/static-rsc-4/GjZDXZVPalFvH7yTYnvhnWFsbrChnk3SWL2-N1klrJq7UPXrmUl7nd1Ix4zDqZxyg7bQZlRTHWVI4-RwbQoojrXsobJ_8ziqm0MxPZ3f4jZVEzs2Dx2dHR-px94fL3RDXvnhfjmj1tYfMv_UUf9Di0SXQqaBZU5WTb1thoCIUF8?purpose=inline" alt="Example pathway for goods moving from production to consumers" width="780" />
+</p>
 
 ## Prerequisites
 
