@@ -1,82 +1,152 @@
 # FleetX — AI Container Intelligence Platform
 
-FleetX is a localhost-first enterprise logistics intelligence platform for monitoring containers, analyzing routes, simulating disruptions, and operating intermodal facilities.
+FleetX is a localhost-first logistics intelligence platform for monitoring container movements, analyzing routes, simulating disruptions, and operating intermodal facilities from a single dashboard.
 
-## Architecture overview
+It combines a React and TypeScript operations console with a FastAPI backend, interactive geospatial views, predictive ETA and delay-risk workflows, and digital-twin simulations for disruption planning.
 
-- **Frontend:** React, TypeScript, Vite, Tailwind CSS, Leaflet, and the original white/orange FleetX dashboard in `frontend/`
-- **Backend:** FastAPI service in `backend/`
-- **Local data safety:** `frontend/src/data/initialData.ts` keeps the interface usable while backend data is unavailable
-- **API client:** `frontend/src/services/api.ts` uses `http://127.0.0.1:8000/api`
+## What FleetX provides
 
-## Features
+- **Shipment visibility:** monitor containers, routes, ports, vessel movements, and operational status.
+- **Predictive intelligence:** review ETA predictions, confidence levels, delay risk, and AI-generated operational context.
+- **Scenario planning:** simulate storms, port strikes, customs holds, vessel breakdowns, and fuel-price spikes.
+- **Intermodal operations:** inspect Port Radar data and Warehouse Twin yard telemetry.
+- **Decision support:** compare routes, optimize routing, and export analytics or incident reports.
+- **Operator experience:** use the AI Agent, command palette, demo tour, settings, notifications, and recovery states.
 
-- White enterprise dashboard with FleetX orange branding
-- Left rounded sidebar and top navigation
-- Alex Morgan operator profile and AI search
-- 2-Min Demo Tour
-- Double-stacked freight containers on a train
-- Floating KPI and sensor telemetry cards
-- AI Agent operational assistant
-- Interactive Leaflet world map with route and port telemetry
-- ETA prediction, confidence, and delay-risk analysis
-- Route optimization
-- Storm, port strike, customs delay, vessel breakdown, and fuel spike simulations
-- Port Radar
-- Warehouse Twin with yard telemetry
-- Digital Twin disruption console
-- Analytics charts and CSV export
-- Incident Center
-- PDF incident dossier export
-- Command palette, settings, toast notifications, and ErrorBoundary recovery
+## Architecture
 
-## Walkthrough
+```text
+┌─────────────────────────────┐      HTTP / JSON      ┌─────────────────────────────┐
+│ React + TypeScript + Vite   │ ────────────────────▶ │ FastAPI + Python             │
+│ frontend/                    │ ◀──────────────────── │ backend/                     │
+│                             │                       │                             │
+│ Leaflet map, dashboard,     │                       │ Operational APIs, analytics, │
+│ simulations, charts, export │                       │ predictions, and scenarios   │
+└─────────────────────────────┘                       └─────────────────────────────┘
+``` 
 
-1. Start the FastAPI backend and open the FleetX dashboard.
-2. Review the train-mounted stacked container and floating telemetry cards.
-3. Use the AI Agent to search containers, trigger actions, compare routes, or export a report.
-4. Open the world map to inspect the vessel route, port congestion, and weather overlays.
-5. Use the Digital Twin controls to simulate a storm, port strike, customs hold, or fuel spike.
-6. Review the ETA card, risk explanation, and AI operational narrative.
-7. Open Route Optimization, Port Radar, Warehouse Twin, and Analytics from the sidebar.
-8. Run the Demo Tour to exercise the primary workflow end to end.
+- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, Leaflet, Lucide, and jsPDF.
+- **Backend:** FastAPI with Uvicorn, Pydantic, pandas, NumPy, scikit-learn, and ReportLab.
+- **API client:** `frontend/src/services/api.ts` targets `http://127.0.0.1:8000/api` by default.
+- **Local fallback:** `frontend/src/data/initialData.ts` keeps the dashboard usable when the API is unavailable.
 
-## Local quick start
+## Prerequisites
 
-### Backend
+- Node.js 18+ and npm
+- Python 3.10+
+- Git
+
+## Quick start
+
+Clone the repository and install the backend and frontend dependencies:
 
 ```bash
-cd backend
-pip install -r ../requirements.txt
-uvicorn main:app --host 127.0.0.1 --port 8000
+git clone https://github.com/sanjana1103-stack/FleetX-AI-Container-Intelligence-Platform.git
+cd FleetX-AI-Container-Intelligence-Platform
+
+python -m venv .venv
+# macOS/Linux
+source .venv/bin/activate
+# Windows PowerShell
+# .venv\\Scripts\\Activate.ps1
+
+pip install -r requirements.txt
+cd frontend
+npm install
+cd ..
 ```
+
+### Start the backend
+
+From the repository root:
+
+```bash
+uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+### Start the frontend
+
+In a second terminal, from the repository root:
+
+```bash
+cd frontend
+npm run dev
+```
+
+Open **http://localhost:3000** to use the FleetX dashboard.
+
+## Service URLs
+
+| Service | URL |
+| --- | --- |
+| FleetX dashboard | [http://localhost:3000](http://localhost:3000) |
+| FastAPI root | [http://127.0.0.1:8000](http://127.0.0.1:8000) |
+| Swagger UI | [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) |
+| ReDoc | [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc) |
+| Health check | [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health) |
+
+## Using the dashboard
+
+1. Open the dashboard and review the live train visualization, stacked containers, KPIs, and sensor telemetry.
+2. Ask the **AI Agent** to search shipments, compare routes, trigger actions, or prepare a report.
+3. Open the **world map** to inspect routes, port congestion, weather overlays, and vessel telemetry.
+4. Use the **Digital Twin** to run a disruption scenario such as a storm, port strike, customs delay, or fuel spike.
+5. Review the resulting ETA, confidence score, risk explanation, and operational narrative.
+6. Explore **Route Optimization**, **Port Radar**, **Warehouse Twin**, **Analytics**, and **Incident Center** from the sidebar.
+7. Run the **2-Min Demo Tour** for a guided end-to-end workflow.
+
+## Development commands
 
 ### Frontend
 
 ```bash
 cd frontend
-npm install
-npm run build
-npm run dev
+npm run dev      # Start the Vite development server on port 3000
+npm run build    # Create a production build
+npm run preview  # Preview the production build locally
 ```
 
-## Local URLs
+### Backend
 
-| Service | URL |
-| --- | --- |
-| FleetX Dashboard | http://localhost:3000 |
-| FastAPI Backend | http://127.0.0.1:8000 |
-| Swagger Docs | http://127.0.0.1:8000/docs |
-| Health Check | http://127.0.0.1:8000/api/health |
+```bash
+uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
+```
 
-## Verification
+## Project structure
 
-- Dataset includes 520 containers and 104 ports.
-- `cd frontend && npm install` completes successfully.
-- `cd frontend && npm run build` completes successfully.
-- `cd frontend && npm run dev` serves the dashboard on port 3000.
-- The train visualization, stacked containers, KPI cards, and AI Agent render.
-- The Leaflet map loads with the local Leaflet CSS import.
-- All disruption simulations remain interactive.
-- ETA prediction, route optimization, Port Radar, Analytics, and Warehouse Twin render.
-- `Promise.allSettled`, `initialData.ts`, `import type`, `isolatedModules`, `verbatimModuleSyntax: false`, and ErrorBoundary blank-screen protections remain enabled.
+```text
+.
+├── backend/
+│   ├── api/                 # FastAPI routes
+│   ├── data/                # Backend datasets and operational data
+│   └── main.py              # FastAPI application entry point
+├── frontend/
+│   ├── src/
+│   │   ├── components/      # Dashboard and reusable UI components
+│   │   ├── data/            # Local fallback and demo data
+│   │   ├── services/        # API client and frontend services
+│   │   └── ...
+│   ├── package.json
+│   └── vite.config.*
+├── requirements.txt
+└── README.md
+```
+
+## Verification checklist
+
+- Install frontend dependencies with `cd frontend && npm install`.
+- Build the frontend with `cd frontend && npm run build`.
+- Start both services and confirm the dashboard loads on port 3000.
+- Confirm the API responds at `/api/health` and the interactive Leaflet map renders.
+- Exercise at least one disruption simulation and verify ETA and risk results update.
+- Confirm Route Optimization, Port Radar, Warehouse Twin, Analytics, and Incident Center are accessible.
+
+## Notes
+
+- The application is configured for local development and uses permissive CORS settings in the FastAPI app. Review these settings before deploying to a shared or production environment.
+- The frontend includes local fallback data so core screens can render when the backend is temporarily unavailable.
+- Do not commit secrets, credentials, generated reports, or local environment files.
+
+## License
+
+No license has been declared for this repository yet. Add a `LICENSE` file before distributing or reusing FleetX outside the repository.
