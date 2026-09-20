@@ -11,8 +11,6 @@ app = FastAPI(
     version="2.0.0",
 )
 
-# Keep local development working while allowing the deployed Vercel origin to be
-# configured safely in Render with a comma-separated CORS_ORIGINS value.
 _default_origins = "http://localhost:3000,http://127.0.0.1:3000"
 _allowed_origins = [
     origin.strip()
